@@ -29,14 +29,14 @@ jobs:
       - name: Package app
         run: |
           cd app
-          zip -r ../app.zip .
-          echo "📦 App packaged ($(du -h ../app.zip | cut -f1))"
+          zip -r ../deploy.zip .
+          echo "📦 App packaged ($(du -h ../deploy.zip | cut -f1))"
 
       - name: Deploy to Azure App Service
         run: |
           az webapp deploy --resource-group $RESOURCE_GROUP \
             --name $WEBAPP_NAME \
-            --src-path app.zip \
+            --src-path deploy.zip \
             --type zip
           echo "🚀 Deployed to https://${WEBAPP_NAME}.azurewebsites.net"
 
