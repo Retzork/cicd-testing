@@ -1,0 +1,36 @@
+name: Deploy Web App via Self-Hosted Runner
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    env:
+      ARM_USE_MSI: "true"
+      ARM_SUBSCRIPTION_ID: "dfaa40f0-0f72-4980-bd34-ccf9162a757d"
+      ARM_TENANT_ID: "75826857-8b6e-4f89-8277-9fa33e7edfda"
+      ARM_CLIENT_ID: "6dac8bc0-239b-47ea-b0d9-2f2dd271c591"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Azure using Managed Identity
+        run: |
+          az login --identity --username $ARM_CLIENT_ID
+          az account set --subscription $ARM_SUBSCRIPTION_ID
+          echo "✅ Authenticated via Managed Identity (no secrets needed)"
+          az account show --query "{name:name, id:id, tenantId:tenantId}" -o table
+
+      - name: Verify Web App is Running
+        run: |
+          az webapp show -n app-cicd-bridge-2026-artha -g rg-cicd-bridge \
+            --query "{name:name, state:state, url:defaultHostName}" -o table
+          echo ""
+          echo "🌐 Web App URL: https://app-cicd-bridge-2026-artha.azurewebsites.net"
+          echo "🔐 Authenticated using: Managed Identity (zero secrets)"
+          echo "🏃 Running on: Self-Hosted Runner (vm-github-runner)"
