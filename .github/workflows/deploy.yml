@@ -10,9 +10,7 @@ jobs:
     runs-on: self-hosted
 
     env:
-      ARM_USE_MSI: "true"
       ARM_SUBSCRIPTION_ID: "dfaa40f0-0f72-4980-bd34-ccf9162a757d"
-      ARM_TENANT_ID: "75826857-8b6e-4f89-8277-9fa33e7edfda"
       ARM_CLIENT_ID: "04e9cad5-aacf-43ed-8ee5-29ceaa2b722d"
       WEBAPP_NAME: "app-cicd-bridge-2026-artha"
       RESOURCE_GROUP: "rg-cicd-bridge"
@@ -26,19 +24,6 @@ jobs:
           az login --identity --client-id $ARM_CLIENT_ID
           az account set --subscription $ARM_SUBSCRIPTION_ID
           echo "✅ Authenticated via Managed Identity (no secrets needed)"
-
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: "1.9.0"
-
-      - name: Terraform Init
-        working-directory: infra
-        run: terraform init
-
-      - name: Terraform Apply
-        working-directory: infra
-        run: terraform apply -auto-approve
 
       - name: Ensure zip is installed
         run: which zip || sudo apt-get install -y zip
@@ -59,3 +44,6 @@ jobs:
           sleep 5
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://${WEBAPP_NAME}.azurewebsites.net)
           echo "🌐 HTTP Status: $HTTP_STATUS"
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "✅ Deployment verified!"
+          fi
