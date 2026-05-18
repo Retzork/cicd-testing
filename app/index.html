@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CI/CD Bridge - Self-Hosted Runner</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            text-align: center;
+            padding: 3rem;
+            max-width: 700px;
+        }
+        .badge {
+            display: inline-block;
+            background: #22c55e;
+            color: #052e16;
+            padding: 0.4rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+        }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .info-card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: left;
+        }
+        .info-card .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin-bottom: 0.3rem;
+        }
+        .info-card .value {
+            font-size: 0.95rem;
+            color: #f1f5f9;
+            font-weight: 500;
+        }
+        .footer {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+        .pulse {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="badge"><span class="pulse"></span> Deployed via Self-Hosted Runner</div>
+        <h1>CI/CD Bridge</h1>
+        <p class="subtitle">
+            This app was deployed to Azure App Service using a GitHub Actions 
+            Self-Hosted Runner with a Managed Identity. Zero secrets stored in GitHub.
+        </p>
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="label">Authentication</div>
+                <div class="value">Managed Identity (IMDS)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Runner</div>
+                <div class="value">vm-github-runner</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Secrets in GitHub</div>
+                <div class="value">None (0)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Identity</div>
+                <div class="value">uami-github-runner</div>
+            </div>
+        </div>
+        <div class="footer">
+            Powered by Terraform + GitHub Actions + Azure Managed Identity
+        </div>
+    </div>
+</body>
+</html>
