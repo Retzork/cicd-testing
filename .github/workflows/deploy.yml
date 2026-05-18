@@ -26,6 +26,10 @@ jobs:
           echo "✅ Authenticated via Managed Identity (no secrets needed)"
           az account show --query "{name:name, id:id}" -o table
 
+      - name: Ensure zip is installed
+        run: |
+          which zip || sudo apt-get install -y zip
+
       - name: Package app
         run: |
           cd app
