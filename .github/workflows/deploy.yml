@@ -21,7 +21,7 @@ jobs:
 
       - name: Login to Azure using Managed Identity
         run: |
-          az login --identity --username $ARM_CLIENT_ID
+          az login --identity --client-id $ARM_CLIENT_ID
           az account set --subscription $ARM_SUBSCRIPTION_ID
           echo "✅ Authenticated via Managed Identity (no secrets needed)"
           az account show --query "{name:name, id:id}" -o table
